@@ -1,0 +1,21 @@
+@import './app/_styles/variables.scss';
+@import './app/_styles/mixin.scss';
+
+.main {
+  min-height: 100vh;
+  color: var(--main-text-color);
+  background-color: var(--main-bg-color);
+}
+
+.description {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.text {
+  @include font(normal, 16px, 142%);
+}
