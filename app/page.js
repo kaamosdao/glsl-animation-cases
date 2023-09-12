@@ -19,9 +19,13 @@ export default function Home() {
     scene.current = new Scene(canvas.current, images, { vShader, fShader });
 
     window.addEventListener('resize', scene.current.resize);
+    window.addEventListener('mousemove', scene.current.onMouseMove);
+    window.addEventListener('click', scene.current.onClick);
 
     return () => {
       window.removeEventListener('resize', scene.current.resize);
+      window.removeEventListener('mousemove', scene.current.onMouseMove);
+      window.removeEventListener('click', scene.current.onClick);
       scene.current.dismiss();
     };
   }, []);
