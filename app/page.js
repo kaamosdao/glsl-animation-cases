@@ -18,9 +18,12 @@ export default function Home() {
   useEffect(() => {
     scene.current = new Scene(canvas.current, images, { vShader, fShader });
 
-    scene.current.addResize();
+    window.addEventListener('resize', scene.current.resize);
 
-    return scene.current.removeResize();
+    return () => {
+      window.removeEventListener('resize', scene.current.resize);
+      scene.current.dismiss();
+    };
   }, []);
 
   return (
