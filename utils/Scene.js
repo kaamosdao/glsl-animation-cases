@@ -19,6 +19,8 @@ class Scene {
     this.renderer = new THREE.WebGLRenderer({ canvas });
     this.renderer.setSize(this.width, this.height);
 
+    this.mousePos = { x: 0, y: 0 };
+
     this.initScene();
 
     this.render();
@@ -61,7 +63,8 @@ class Scene {
       this.height
     );
 
-    this.plane.scale.x = viewportAspect;
+    this.plane.scale.x = viewportAspect * 1.05;
+    this.plane.scale.y = 1.05;
 
     if (imgAspect > viewportAspect) {
       this.material.uniforms.uvRate.value = new THREE.Vector2(
@@ -98,7 +101,7 @@ class Scene {
         vertexShader: vShader,
         fragmentShader: fShader,
         uniforms: {
-          progress: { type: 'f', value: 0 },
+          time: { type: 'f', value: 0 },
           image: {
             type: 't',
             value: this.textures[0].texture,
@@ -111,6 +114,8 @@ class Scene {
             type: 'v2',
             value: new THREE.Vector2(this.width, this.height),
           },
+          waveLength: { type: 'f', value: 3 },
+          mouse: { type: 'v2', value: new THREE.Vector2(0, 0) },
         },
       });
 
@@ -124,12 +129,43 @@ class Scene {
     };
   }
 
-  animate() {
+  onMouseMove = (e) => {
+    const x = (e.clientX - this.width / 2) / (this.width / 2);
+    const y = (e.clientY - this.height / 2) / (this.height / 2);
+
+    this.mousePos.x = x;
+    this.mousePos.y = y;
+  };
+
+  onClick = () => {
+    gsap
+      .timeline()
+      .to(this.material.uniforms.waveLength, {
+        value: 15,
+        duration: 0.5,
+      })
+      .to(this.material.uniforms.waveLength, {
+        value: 3,
+        duration: 0.5,
+      });
+  };
+
+  animate = () => {
+    if (this.material) {
+      this.material.uniforms.time.value += 0.05;
+
+      this.material.uniforms.mouse.value.x +=
+        (this.mousePos.x - this.material.uniforms.mouse.value.x) * 0.02;
+
+      this.material.uniforms.mouse.value.y +=
+        (this.mousePos.y - this.material.uniforms.mouse.value.y) * 0.02;
+    }
+
     this.renderer.render(this.scene, this.camera);
-  }
+  };
 
   render() {
-    gsap.ticker.add(this.animate.bind(this));
+    gsap.ticker.add(this.animate);
   }
 
   dismiss() {
