@@ -63,8 +63,8 @@ class Scene {
       this.height
     );
 
-    this.plane.scale.x = viewportAspect * 1.05;
-    this.plane.scale.y = 1.05;
+    this.plane.scale.x = viewportAspect * 1.09;
+    this.plane.scale.y = 1.09;
 
     if (imgAspect > viewportAspect) {
       this.material.uniforms.uvRate.value = new THREE.Vector2(
