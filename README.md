@@ -2,9 +2,19 @@
 
 [![Linter](https://github.com/kaamosdao/glsl-animation-cases/actions/workflows/linter.yml/badge.svg)](https://github.com/kaamosdao/glsl-animation-cases/actions/workflows/linter.yml)
 
-This project contain some animations, i've learned using glsl shaders. Its not completed and will be replenished over time.
+This project will contain some animations, i've learned using glsl shaders. Will be replenished over time.
 
-Tools i used here: React and Next.js for interfaces and routes, Three.js for scene, GSAP and glsl shaders for animations.
+#
+
+Tools i used here:
+
+- [React](https://react.dev/) and [Next.js](https://nextjs.org/) for interfaces and routes,
+- [Three.js](https://threejs.org/) for scene,
+- [GSAP](https://greensock.com/) and glsl shaders for animations.
+
+#
+
+[Here you can expolre all animations! Deployed on vercel.](https://glsl-animation-cases.vercel.app/)
 
 ## Install
 
