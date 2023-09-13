@@ -104,7 +104,7 @@ class Scene {
           time: { type: 'f', value: 0 },
           image: {
             type: 't',
-            value: this.textures[0].texture,
+            value: this.textures[2].texture,
           },
           uvRate: {
             type: 'v2',
@@ -114,7 +114,7 @@ class Scene {
             type: 'v2',
             value: new THREE.Vector2(this.width, this.height),
           },
-          waveLength: { type: 'f', value: 3 },
+          waveLength: { type: 'f', value: 2 },
           mouse: { type: 'v2', value: new THREE.Vector2(0, 0) },
         },
       });
@@ -145,7 +145,7 @@ class Scene {
         duration: 0.5,
       })
       .to(this.material.uniforms.waveLength, {
-        value: 3,
+        value: 2,
         duration: 0.5,
       });
   };
