@@ -1,7 +1,7 @@
 import './_styles/style.scss';
 
 export const metadata = {
-  title: 'kaamos shaders',
+  title: 'kaamos',
   description: 'Shader animations',
   keywords: ['glsl', 'shader', 'threejs', 'animation'],
 };
