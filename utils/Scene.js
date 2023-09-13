@@ -104,7 +104,7 @@ class Scene {
           time: { type: 'f', value: 0 },
           image: {
             type: 't',
-            value: this.textures[2].texture,
+            value: this.textures[6].texture,
           },
           uvRate: {
             type: 'v2',
@@ -123,7 +123,7 @@ class Scene {
       this.plane = new THREE.Mesh(this.geometry, this.material);
       this.scene.add(this.plane);
 
-      this.imgNum = 0;
+      this.imgNum = 6;
 
       this.resize();
     };
