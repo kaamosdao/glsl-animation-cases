@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { EaselPlugin } from 'gsap/EaselPlugin';
 
 import Scene from '@/utils/Scene';
 
@@ -14,6 +16,10 @@ import s from './page.module.scss';
 export default function Home() {
   const scene = useRef(null);
   const canvas = useRef(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(EaselPlugin);
+  }, []);
 
   useEffect(() => {
     scene.current = new Scene(canvas.current, images, { vShader, fShader });

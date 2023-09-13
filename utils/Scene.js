@@ -142,11 +142,13 @@ class Scene {
       .timeline()
       .to(this.material.uniforms.waveLength, {
         value: 15,
-        duration: 0.5,
+        duration: 2.5,
+        ease: 'power1.out',
       })
       .to(this.material.uniforms.waveLength, {
         value: 2,
-        duration: 0.5,
+        duration: 2.5,
+        ease: 'power1.out',
       });
   };
 
