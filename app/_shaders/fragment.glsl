@@ -28,7 +28,7 @@ void main() {
   c /= 90.;
   c = 1.8 - sqrt(c);
 
-  vec4 color = texture2D(image, vUv) * texture2D(image, vec2(vUv.x + cos(c) * mouse.x * 0.05, vUv.y + sin(c) * mouse.y * 0.05 )) * 0.75;
+  vec4 color = texture2D(image, vUv) * texture2D(image, vec2(vUv.x + cos(c) * mouse.x * 0.07, vUv.y + cos(c) * mouse.y * 0.07 )) * 0.75;
 
   gl_FragColor = color;
 }
