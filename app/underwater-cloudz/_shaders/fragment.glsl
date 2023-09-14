@@ -6,14 +6,15 @@ uniform sampler2D image;
 uniform vec2 resolution;
 uniform float time;
 uniform vec2 mouse;
+uniform float speed;
 
 varying vec2 vUv;
   
-const float NOISE_SIZE = 2.; // The size of the noise. Essentially the multiplier for the noise UV. Smaller = bigger
-const float INTENSITY = 1.; // The intensity of the displacement
-const float REFLECTION_INTENSITY = 4.; // The intensity of the rellowish reflections.
-const int octaves = 5; // the number of octaves to generate in the FBM noise
-const float seed = 43758.5453123; // A random seed :)
+float NOISE_SIZE = 2.; // The size of the noise. Essentially the multiplier for the noise UV. Smaller = bigger
+float INTENSITY = 1.; // The intensity of the displacement
+float REFLECTION_INTENSITY = 4.; // The intensity of the rellowish reflections.
+int octaves = 5; // the number of octaves to generate in the FBM noise
+float seed = 43758.5453123; // A random seed :)
   
     /*
       Based on Underwater Sun
@@ -46,11 +47,11 @@ float fbm1(in vec2 _st, float seed) {
   vec2 shift = vec2(100.0);
   // Rotate to reduce axial bias
   mat2 rot = mat2(cos(0.5), sin(0.5),
-                  -sin(0.5), cos(0.50));
+                  -sin(0.5), cos(0.5));
   for (int i = 0; i < octaves; ++i) {
       v += a * noise(_st, seed);
       _st = rot * _st * 2.0 + shift;
-      a *= 0.4;
+      a *= 0.3;
   }
   return v + .4;
 }
@@ -61,9 +62,9 @@ float pattern(vec2 uv, float seed, float time, inout vec2 q, inout vec2 r) {
                   fbm1( uv + vec2(5.2,1.3), seed ) );
 
   r = vec2( fbm1( uv + 4.0*q + vec2(1.7 - time / 2.,9.2), seed ),
-                  fbm1( uv + 4.0*q + vec2(8.3 - time / 2.,2.8), seed ) );
+                  fbm1( uv + 4.0*q + vec2(.3 - time / 2.,2.8), seed ) );
 
-  float rtn = fbm1( uv + 4.0*r, seed );
+  float rtn = fbm1( uv + 3.0*r * speed, seed );
 
   return rtn;
 }
@@ -89,9 +90,8 @@ void main() {
 
   vec4 img = texture2D(image, vUv);
 
-  vec2 uvDist = vec2(vUv.x + mouse.x * 0.01, vUv.y + mouse.y * 0.01); // the basic colour
-  uvDist += (1. - pattern * REFLECTION_INTENSITY * .5) * smoothstep(0.0,.7,clamp(1. - len * 1.5,0.0,1.0)) * vec2(-.2, -.1); // vignette and reflection
+  vec2 uvDist = vec2(vUv.x + mouse.x * 0.001, vUv.y + mouse.y * 0.001); // the basic colour
+  uvDist += (1. - pattern * REFLECTION_INTENSITY * .5) * smoothstep(0.0,.7,clamp(1.9 - len * 1.5,0.0,1.0)) * vec2(-.03, -.01); // vignette and reflection
  
-  gl_FragColor = img * texture2D(image, vec2(uvDist.x + mouse.x * 0.01, uvDist.y + mouse.y * 0.01));
-  // gl_FragColor = vec4(colour.r + image.r * 0.05, colour.g + image.g * 0.05, colour.b + image.b * 0.05, 1.);
+  gl_FragColor = img * texture2D(image, vec2(uvDist.x + mouse.x * 0.001, uvDist.y + mouse.y * 0.001));
 }
