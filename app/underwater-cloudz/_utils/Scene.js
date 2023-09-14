@@ -20,6 +20,7 @@ class Scene {
     this.renderer.setSize(this.width, this.height);
 
     this.mousePos = { x: 0, y: 0 };
+    this.playing = false;
 
     this.initScene();
 
@@ -115,6 +116,7 @@ class Scene {
             value: new THREE.Vector2(this.width, this.height),
           },
           waveLength: { type: 'f', value: 2 },
+          speed: { type: 'f', value: 1 },
           mouse: { type: 'v2', value: new THREE.Vector2(0, 0) },
         },
       });
@@ -138,16 +140,31 @@ class Scene {
   };
 
   onClick = () => {
+    if (this.playing) {
+      return;
+    }
+
+    this.playing = true;
+
     gsap
-      .timeline()
-      .to(this.material.uniforms.waveLength, {
-        value: 15,
-        duration: 2.5,
+      .timeline({
+        onComplete: () => {
+          this.playing = false;
+        },
+      })
+      .to(this.material.uniforms.speed, {
+        value: 1.5,
+        duration: 0.5,
+        ease: 'power1.in',
+      })
+      .to(this.material.uniforms.speed, {
+        value: 2,
+        duration: 0.4,
         ease: 'power1.out',
       })
-      .to(this.material.uniforms.waveLength, {
-        value: 2,
-        duration: 2.5,
+      .to(this.material.uniforms.speed, {
+        value: 1,
+        duration: 1.2,
         ease: 'power1.out',
       });
   };

@@ -138,8 +138,18 @@ class Scene {
   };
 
   onClick = () => {
+    if (this.playing) {
+      return;
+    }
+
+    this.playing = true;
+
     gsap
-      .timeline()
+      .timeline({
+        onComplete: () => {
+          this.playing = false;
+        },
+      })
       .to(this.material.uniforms.waveLength, {
         value: 15,
         duration: 2.5,
