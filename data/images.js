@@ -1,1 +1,1 @@
-export default new Array(12).fill(undefined).map((_, i) => `${i}.jpg`);
+export default new Array(25).fill(undefined).map((_, i) => `${i}.jpg`);
