@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { EaselPlugin } from 'gsap/dist/EaselPlugin';
 
-import Scene from './_utils/Scene';
+import Scene from '@/utils/underwater-cloudz/Scene';
 
 import images from '@/data/images';
 
