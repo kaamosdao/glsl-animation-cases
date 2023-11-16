@@ -1,8 +1,7 @@
-'use client';
-
+import Head from 'next/head';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { EaselPlugin } from 'gsap/EaselPlugin';
+import { EaselPlugin } from 'gsap/dist/EaselPlugin';
 
 import Scene from '@/utils/Scene';
 
@@ -11,7 +10,7 @@ import images from '@/data/images';
 import vShader from './_shaders/vertex.glsl';
 import fShader from './_shaders/fragment.glsl';
 
-import s from './page.module.scss';
+import s from './index.module.scss';
 
 export default function Home() {
   const scene = useRef(null);
@@ -35,12 +34,19 @@ export default function Home() {
       scene.current.dismiss();
     };
   }, []);
-
   return (
-    <main className={s.main}>
-      <div className={s.canvasHolder}>
-        <canvas ref={canvas} />
-      </div>
-    </main>
+    <>
+      <Head>
+        <title>kaamos</title>
+        <meta name="description" content="Shader animations" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className={s.main}>
+        <div className={s.canvasHolder}>
+          <canvas ref={canvas} />
+        </div>
+      </main>
+    </>
   );
 }
