@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
-import { EaselPlugin } from 'gsap/EaselPlugin';
+import { EaselPlugin } from 'gsap/dist/EaselPlugin';
 
 import Scene from './_utils/Scene';
 
@@ -11,7 +11,7 @@ import images from '@/data/images';
 import vShader from './_shaders/vertex.glsl';
 import fShader from './_shaders/fragment.glsl';
 
-import s from './page.module.scss';
+import s from './index.module.scss';
 
 export default function Home() {
   const scene = useRef(null);
