@@ -1,10 +1,8 @@
-'use client';
-
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { EaselPlugin } from 'gsap/dist/EaselPlugin';
 
-import Scene from '@/utils/underwater-cloudz/Scene';
+import Scene from '@/utils/swaying-buddha/Scene';
 
 import images from '@/data/images';
 
