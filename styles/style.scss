@@ -6,20 +6,24 @@
   --main-text-color: #{$white};
   --sec-text-color: #{$black};
 
+  --third-text-color: #{$blue};
+
+  --blue: #{$blue};
+  --purple: #{$purple};
+  --pink: #{$pink};
+  --red: #{$red};
+  --gold: #{$gold};
+
   --main-bg-color: #{$black};
   --sec-bg-color: #{$white};
-
-  --font-family: 'Roboto', 'Arial', sans-serif;
 }
 
 body {
   margin: 0 auto 0 auto;
-  font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-size: 20px;
   letter-spacing: normal;
   background-color: var(--main-bg-color);
-  // cursor: none;
 }
 
 img {
