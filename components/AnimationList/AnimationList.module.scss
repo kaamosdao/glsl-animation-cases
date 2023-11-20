@@ -1,0 +1,33 @@
+@import './styles/variables.scss';
+@import './styles/mixin.scss';
+
+.nav {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  width: 100%;
+
+  @media (min-width: $tablet) {
+    flex-direction: row;
+  }
+}
+
+.navButton {
+  @include font(normal, 12px, 24px, 3px);
+
+  padding: 0;
+  border: none;
+  color: var(--blue);
+  text-decoration: underline;
+  background-color: transparent;
+
+  @media (min-width: $tablet) {
+    @include font(normal, 14px, 24px, 3px);
+  }
+}
+
+.navButton:hover {
+  cursor: pointer;
+}

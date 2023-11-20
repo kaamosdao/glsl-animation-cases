@@ -1,0 +1,55 @@
+@import './styles/variables.scss';
+@import './styles/mixin.scss';
+
+.modal {
+  --cliptrX: 100%;
+  --cliptlX: 0%;
+  --clipbrX: 100%;
+  --clipblX: 0%;
+
+  --cliptrY: 0%;
+  --cliptlY: 0%;
+  --clipbrY: 0%;
+  --clipblY: 0%;
+
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: var(--main-text-color);
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  backdrop-filter: blur(10px);
+  clip-path: polygon(
+    var(--cliptlX) var(--cliptlY),
+    var(--cliptrX) var(--cliptrY),
+    var(--clipbrX) var(--clipbrY),
+    var(--clipblX) var(--clipblY)
+  );
+}
+
+.buttonClose {
+  position: absolute;
+  top: 3%;
+  right: 4%;
+  font-size: 30px;
+  color: var(--main-text-color);
+  border: none;
+  background-color: transparent;
+  transform: rotate(45deg);
+  cursor: pointer;
+}
+
+.buttonClose:hover {
+  color: var(--btn-hover-fourth-color);
+}
+
+.buttonClose:active {
+  color: var(--btn-active-third-color);
+}

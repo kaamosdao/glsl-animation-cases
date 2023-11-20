@@ -15,7 +15,16 @@ const nextConfig = {
     return config;
   },
   eslint: {
-    dirs: ['pages', 'data', 'utils', 'components', 'styles'],
+    dirs: [
+      'pages',
+      'data',
+      'utils',
+      'components',
+      'styles',
+      'providers',
+      'hooks',
+      'context',
+    ],
   },
 };
 

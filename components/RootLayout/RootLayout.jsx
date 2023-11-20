@@ -1,4 +1,19 @@
 import Head from 'next/head';
+import cn from 'classnames';
+
+import { Roboto } from 'next/font/google';
+
+import Providers from '@/providers';
+
+import Navigation from '../Navigation/Navigation';
+
+import s from './RootLayout.module.scss';
+
+const font = Roboto({
+  weight: '400',
+  subsets: ['latin'],
+  display: 'swap',
+});
 
 export default function RootLayout({ children }) {
   return (
@@ -9,7 +24,12 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>{children}</main>
+      <Providers>
+        <main className={cn(s.main, font.className)}>
+          <Navigation />
+          {children}
+        </main>
+      </Providers>
     </>
   );
 }
