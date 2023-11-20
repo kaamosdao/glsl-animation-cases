@@ -1,3 +1,3 @@
-import RootLayout from './Navigation';
+import Navigation from './Navigation';
 
-export default RootLayout;
+export default Navigation;
