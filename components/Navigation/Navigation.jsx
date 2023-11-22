@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import gsap from 'gsap';
 
-import useModal from '@/hooks';
+import { useModal } from '@/hooks';
 
 import modalTypes from '@/utils/types';
 
