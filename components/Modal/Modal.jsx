@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap/dist/gsap';
 
-import useModal from '@/hooks';
+import { useModal } from '@/hooks';
 
 import AnimationList from '@/components/AnimationList';
 

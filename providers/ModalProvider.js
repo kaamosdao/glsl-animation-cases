@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import { Transition } from 'react-transition-group';
 
-import ModalContext from '@/context/ModalContext';
+import { ModalContext } from '@/context';
 import Modal from '@/components/Modal';
 
 const ModalProvider = ({ children }) => {

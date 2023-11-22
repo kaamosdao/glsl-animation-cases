@@ -1,8 +1,8 @@
 import { createRef, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import gsap from 'gsap';
 
-import useModal from '@/hooks';
+import { useModal } from '@/hooks';
 
 import s from './AnimationList.module.scss';
 
@@ -17,7 +17,6 @@ const pagesList = [
 
 export default function AnimationList() {
   const tl = useRef(null);
-  const router = useRouter();
 
   const { setModal } = useModal();
 
@@ -55,32 +54,26 @@ export default function AnimationList() {
     });
   };
 
-  const onClick = (path) => (e) => {
+  const onClick = (e) => {
     e.stopPropagation();
 
-    const timeout = 1000;
-
     setModal(null);
-
-    setTimeout(() => {
-      router.push(path);
-    }, timeout);
   };
 
   return (
     <nav className={s.nav}>
       {pagesList.map(({ path, label, ref }) => (
-        <button
+        <Link
           ref={ref}
           key={path}
           onMouseEnter={onMouseEnter(ref)}
           onMouseLeave={onMouseLeave(ref)}
-          onClick={onClick(path)}
-          type="button"
+          onClick={onClick}
           className={s.navButton}
+          href={path}
         >
           {label}
-        </button>
+        </Link>
       ))}
     </nav>
   );
