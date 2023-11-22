@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import gsap from 'gsap/dist/gsap';
 import { EaselPlugin } from 'gsap/dist/EaselPlugin';
 
 import Scene from '@/utils/underwater-cloudz/Scene';
+import { usePageTransition } from '@/hooks';
 
 import images from '@/data/images';
 
@@ -16,6 +17,9 @@ import s from './index.module.scss';
 export default function Home() {
   const scene = useRef(null);
   const canvas = useRef(null);
+  const canvasHolder = useRef(null);
+
+  const isVisible = usePageTransition();
 
   useEffect(() => {
     gsap.registerPlugin(EaselPlugin);
@@ -36,8 +40,28 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    let animation;
+
+    if (isVisible) {
+      animation = gsap.timeline().to(canvasHolder?.current, {
+        opacity: 1,
+        duration: 1.0,
+      });
+    } else {
+      animation = gsap.timeline().to(canvasHolder?.current, {
+        opacity: 0,
+        duration: 0.4,
+      });
+    }
+
+    return () => {
+      animation?.kill();
+    };
+  }, [canvasHolder, isVisible]);
+
   return (
-    <div className={s.canvasHolder}>
+    <div ref={canvasHolder} className={s.canvasHolder}>
       <canvas ref={canvas} />
     </div>
   );
