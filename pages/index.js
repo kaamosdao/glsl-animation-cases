@@ -14,7 +14,10 @@ export default function Home() {
   const isVisible = usePageTransition();
 
   useEffect(() => {
-    scene.current = new Scene(canvas.current, ['enso1.png', 'enso-sharp.png']);
+    scene.current = new Scene(canvas.current, [
+      'enso-mask.png',
+      'enso-sharp.png',
+    ]);
 
     window.addEventListener('resize', scene.current.resize);
     // window.addEventListener('mousemove', scene.current.onMouseMove);

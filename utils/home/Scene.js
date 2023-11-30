@@ -1,4 +1,6 @@
+/* eslint-disable no-param-reassign */
 import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { gsap } from 'gsap';
 
 class Scene {
@@ -12,14 +14,19 @@ class Scene {
     this.camera = new THREE.PerspectiveCamera(
       70,
       this.width / this.height,
-      1,
+      0.1,
       100
     );
     this.camera.position.set(0, 0, 1);
     this.renderer = new THREE.WebGLRenderer({ canvas });
     this.renderer.setSize(this.width, this.height);
+    this.renderer.setClearColor(0xffffff);
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
     this.mousePos = { x: 0, y: 0 };
+
+    this.controls.update();
 
     this.initScene();
 
@@ -41,7 +48,7 @@ class Scene {
 
     this.resizeImg();
 
-    const { height } = this.plane.geometry.parameters;
+    const { height } = this.planes[0].geometry.parameters;
 
     this.camera.fov =
       2 * Math.atan(height / 2 / this.camera.position.z) * (180 / Math.PI);
@@ -57,8 +64,10 @@ class Scene {
 
     const imgAspect = this.imgWidth / this.imgHeight;
 
-    this.plane.scale.x = imgAspect * 1.09;
-    this.plane.scale.y = 1.09;
+    this.planes.forEach((plane) => {
+      plane.scale.x = imgAspect * 1.09;
+      plane.scale.y = 1.09;
+    });
   }
 
   initScene() {
@@ -78,14 +87,36 @@ class Scene {
 
     this.imgNum = 1;
 
-    loadManager.onLoad = () => {
-      this.material = new THREE.MeshBasicMaterial({
-        map: this.textures[this.imgNum].texture,
-      });
+    this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
+    this.planes = [];
 
-      this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
-      this.plane = new THREE.Mesh(this.geometry, this.material);
-      this.scene.add(this.plane);
+    loadManager.onLoad = () => {
+      const group = new THREE.Group();
+
+      for (let i = 0; i < 3; i += 1) {
+        let material;
+
+        material = new THREE.MeshBasicMaterial({
+          map: this.textures[this.imgNum].texture,
+        });
+
+        if (i > 0) {
+          material = new THREE.MeshBasicMaterial({
+            map: this.textures[this.imgNum].texture,
+            alphaMap: this.textures[0].texture,
+            transparent: true,
+          });
+        }
+
+        const plane = new THREE.Mesh(this.geometry, material);
+        plane.position.z = i * 0.25;
+
+        this.planes.push(plane);
+
+        group.add(plane);
+      }
+
+      this.scene.add(group);
 
       this.resize();
     };
@@ -128,7 +159,7 @@ class Scene {
     if (this.material) {
       this.time += 0.05;
     }
-
+    this.controls.update();
     this.renderer.render(this.scene, this.camera);
   };
 
