@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap/dist/gsap';
-import { EaselPlugin } from 'gsap/dist/EaselPlugin';
 
 import Scene from '@/utils/underwater-cloudz/Scene';
 import { usePageTransition } from '@/hooks';
@@ -14,16 +13,12 @@ import fShader from './_shaders/fragment.glsl';
 
 import s from './index.module.scss';
 
-export default function Home() {
+export default function CloudzPage() {
   const scene = useRef(null);
   const canvas = useRef(null);
   const canvasHolder = useRef(null);
 
   const isVisible = usePageTransition();
-
-  useEffect(() => {
-    gsap.registerPlugin(EaselPlugin);
-  }, []);
 
   useEffect(() => {
     scene.current = new Scene(canvas.current, images, { vShader, fShader });
