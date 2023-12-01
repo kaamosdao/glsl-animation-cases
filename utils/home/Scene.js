@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
 import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { gsap } from 'gsap';
 
 class Scene {
@@ -22,11 +21,8 @@ class Scene {
     this.renderer.setSize(this.width, this.height);
     this.renderer.setClearColor(0xffffff);
 
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-
     this.mousePos = { x: 0, y: 0 };
-
-    this.controls.update();
+    this.mouseTarget = new THREE.Vector2();
 
     this.initScene();
 
@@ -89,10 +85,9 @@ class Scene {
 
     this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
     this.planes = [];
+    this.group = new THREE.Group();
 
     loadManager.onLoad = () => {
-      const group = new THREE.Group();
-
       for (let i = 0; i < 3; i += 1) {
         let material;
 
@@ -109,14 +104,15 @@ class Scene {
         }
 
         const plane = new THREE.Mesh(this.geometry, material);
-        plane.position.z = i * 0.25;
+        const distanceBetween = 0.15;
+        plane.position.z = i * distanceBetween;
 
         this.planes.push(plane);
 
-        group.add(plane);
+        this.group.add(plane);
       }
 
-      this.scene.add(group);
+      this.scene.add(this.group);
 
       this.resize();
     };
@@ -130,36 +126,16 @@ class Scene {
     this.mousePos.y = y;
   };
 
-  onClick = () => {
-    if (this.playing) {
-      return;
-    }
-
-    this.playing = true;
-
-    gsap
-      .timeline({
-        onComplete: () => {
-          this.playing = false;
-        },
-      })
-      .to(this.material.uniforms.waveLength, {
-        value: 15,
-        duration: 2.5,
-        ease: 'power1.out',
-      })
-      .to(this.material.uniforms.waveLength, {
-        value: 2,
-        duration: 2.5,
-        ease: 'power1.out',
-      });
-  };
-
   animate = () => {
     if (this.material) {
       this.time += 0.05;
     }
-    this.controls.update();
+
+    this.mouseTarget.lerp(this.mousePos, 0.05);
+
+    this.group.rotation.x = -this.mouseTarget.y * 0.1;
+    this.group.rotation.y = -this.mouseTarget.x * 0.1;
+
     this.renderer.render(this.scene, this.camera);
   };
 

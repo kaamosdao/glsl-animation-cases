@@ -14,19 +14,14 @@ export default function Home() {
   const isVisible = usePageTransition();
 
   useEffect(() => {
-    scene.current = new Scene(canvas.current, [
-      'enso-mask.png',
-      'enso-sharp.png',
-    ]);
+    scene.current = new Scene(canvas.current, ['enso-mask.jpg', 'enso.jpg']);
 
     window.addEventListener('resize', scene.current.resize);
-    // window.addEventListener('mousemove', scene.current.onMouseMove);
-    // window.addEventListener('click', scene.current.onClick);
+    window.addEventListener('mousemove', scene.current.onMouseMove);
 
     return () => {
       window.removeEventListener('resize', scene.current.resize);
-      // window.removeEventListener('mousemove', scene.current.onMouseMove);
-      // window.removeEventListener('click', scene.current.onClick);
+      window.removeEventListener('mousemove', scene.current.onMouseMove);
       scene.current.dismiss();
     };
   }, []);
