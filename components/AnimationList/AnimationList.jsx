@@ -7,6 +7,7 @@ import { useModal } from '@/hooks';
 import s from './AnimationList.module.scss';
 
 const pagesList = [
+  { path: '/', label: 'Home', ref: createRef(null) },
   { path: '/swaying-buddha', label: 'Swaying Buddha', ref: createRef(null) },
   {
     path: '/underwater-cloudz',
