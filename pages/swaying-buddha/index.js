@@ -4,8 +4,6 @@ import gsap from 'gsap';
 import Scene from '@/utils/swaying-buddha/Scene';
 import { usePageTransition } from '@/hooks';
 
-import images from '@/data/images';
-
 import vShader from './_shaders/vertex.glsl';
 import fShader from './_shaders/fragment.glsl';
 
@@ -19,7 +17,10 @@ export default function BuddhaPage() {
   const isVisible = usePageTransition();
 
   useEffect(() => {
-    scene.current = new Scene(canvas.current, images, { vShader, fShader });
+    scene.current = new Scene(canvas.current, ['swaying-buddha/buddha.jpg'], {
+      vShader,
+      fShader,
+    });
 
     window.addEventListener('resize', scene.current.resize);
     window.addEventListener('mousemove', scene.current.onMouseMove);
