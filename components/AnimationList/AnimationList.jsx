@@ -14,6 +14,11 @@ const pagesList = [
     label: 'Underwater Cloudz',
     ref: createRef(null),
   },
+  {
+    path: '/flower-slider',
+    label: 'Flower Slider',
+    ref: createRef(null),
+  },
 ];
 
 export default function AnimationList() {
