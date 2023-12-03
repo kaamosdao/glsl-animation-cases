@@ -1,7 +1,13 @@
 /* eslint-disable no-param-reassign */
 import * as THREE from 'three';
 import { gsap } from 'gsap';
+
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import CurtainShader from '@/pages/flower-slider/_shaders/postprocessing/curtain';
 
 class Scene {
   constructor(canvas, images) {
@@ -24,9 +30,12 @@ class Scene {
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.update();
+    this.guiSettings();
 
     this.mousePos = { x: 0, y: 0 };
     this.mouseTarget = new THREE.Vector2();
+
+    this.initPostProcessing();
 
     this.initScene();
 
@@ -56,6 +65,7 @@ class Scene {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(this.width, this.height);
+    this.composer.setSize(this.width, this.height);
   };
 
   resizeImg() {
@@ -68,6 +78,17 @@ class Scene {
       plane.scale.x = imgAspect * 1.09;
       plane.scale.y = 1.09;
     });
+  }
+
+  initPostProcessing() {
+    this.composer = new EffectComposer(this.renderer);
+    this.composer.setSize(this.width, this.height);
+
+    const renderPass = new RenderPass(this.scene, this.camera);
+    this.composer.addPass(renderPass);
+
+    this.curtainPass = new ShaderPass(CurtainShader);
+    this.composer.addPass(this.curtainPass);
   }
 
   initScene() {
@@ -124,6 +145,20 @@ class Scene {
     };
   }
 
+  async guiSettings() {
+    this.settings = {
+      progress: 0,
+      progress1: 0,
+    };
+
+    const dat = await import('dat.gui');
+
+    this.gui = new dat.GUI();
+    this.gui.add(this.settings, 'progress', 0, 1, 0.01).onChange((value) => {
+      this.curtainPass.uniforms.uProgress.value = value;
+    });
+  }
+
   onMouseMove = (e) => {
     const x = (e.clientX - this.width / 2) / (this.width / 2);
     const y = (e.clientY - this.height / 2) / (this.height / 2);
@@ -145,7 +180,7 @@ class Scene {
       mesh.position.z = (i + 1) * 0.1 - this.oscillator * 0.1;
     });
 
-    this.renderer.render(this.scene, this.camera);
+    this.composer.render();
     this.controls.update();
   };
 
