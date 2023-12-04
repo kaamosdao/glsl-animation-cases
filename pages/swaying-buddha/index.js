@@ -4,8 +4,8 @@ import gsap from 'gsap';
 import Scene from '@/utils/swaying-buddha/Scene';
 import { usePageTransition } from '@/hooks';
 
-import vShader from './_shaders/vertex.glsl';
-import fShader from './_shaders/fragment.glsl';
+import vShader from '@/shaders/swaying-buddha/vertex.glsl';
+import fShader from '@/shaders/swaying-buddha/fragment.glsl';
 
 import s from './index.module.scss';
 
