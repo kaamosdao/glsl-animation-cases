@@ -21,12 +21,12 @@ export default function FlowerPage() {
     ]);
 
     window.addEventListener('resize', scene.current.resize);
-    window.addEventListener('click', scene.current.runAnimation);
+    window.addEventListener('click', scene.current.runSlideAnimation);
     window.addEventListener('mousemove', scene.current.onMouseMove);
 
     return () => {
       window.removeEventListener('resize', scene.current.resize);
-      window.removeEventListener('click', scene.current.runAnimation);
+      window.removeEventListener('click', scene.current.runSlideAnimation);
       window.removeEventListener('mousemove', scene.current.onMouseMove);
       scene.current.dismiss();
     };

@@ -2,12 +2,14 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
 
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
-import CurtainShader from '@/pages/flower-slider/_shaders/postprocessing/curtain';
+
+import {
+  CurtainShader,
+  RGBShader,
+} from '@/shaders/flower-slider/postprocessing';
 
 class Scene {
   constructor(canvas, images) {
@@ -26,11 +28,7 @@ class Scene {
     this.camera.position.set(0, 0, 1);
     this.renderer = new THREE.WebGLRenderer({ canvas });
     this.renderer.setSize(this.width, this.height);
-    this.renderer.setClearColor(0xffffff);
-
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.update();
-    this.guiSettings();
+    this.renderer.setClearColor(0x1b1f2b);
 
     this.mousePos = { x: 0, y: 0 };
     this.mouseTarget = new THREE.Vector2();
@@ -89,6 +87,9 @@ class Scene {
 
     this.curtainPass = new ShaderPass(CurtainShader);
     this.composer.addPass(this.curtainPass);
+
+    this.rgbPass = new ShaderPass(RGBShader);
+    this.composer.addPass(this.rgbPass);
   }
 
   initScene() {
@@ -110,53 +111,50 @@ class Scene {
 
     this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
     this.planes = [];
-    this.group = new THREE.Group();
+    this.groups = [];
 
     loadManager.onLoad = () => {
       const picsAmount = 3;
 
-      for (let i = 0; i < picsAmount; i += 1) {
-        let material;
+      const imgs = this.textures.slice(1);
+      const alphaMap = this.textures[0].texture;
 
-        material = new THREE.MeshBasicMaterial({
-          map: this.textures[this.imgNum].texture,
-        });
+      imgs.forEach(({ texture, sizes }, index) => {
+        const group = new THREE.Group();
 
-        if (i > 0) {
+        group.position.x = (index * sizes.width) / 1000 / 1.09;
+
+        this.groups.push(group);
+        this.scene.add(group);
+
+        for (let i = 0; i < picsAmount; i += 1) {
+          let material;
+
           material = new THREE.MeshBasicMaterial({
-            map: this.textures[this.imgNum].texture,
-            alphaMap: this.textures[0].texture,
-            transparent: true,
+            map: texture,
           });
+
+          if (i > 0) {
+            material = new THREE.MeshBasicMaterial({
+              map: texture,
+              alphaMap,
+              transparent: true,
+            });
+          }
+
+          const plane = new THREE.Mesh(this.geometry, material);
+          const distanceBetween = 0.09;
+          plane.position.z = i * distanceBetween;
+
+          this.planes.push(plane);
+
+          group.add(plane);
         }
-
-        const plane = new THREE.Mesh(this.geometry, material);
-        const distanceBetween = 0.09;
-        plane.position.z = i * distanceBetween;
-
-        this.planes.push(plane);
-
-        this.group.add(plane);
-      }
-
-      this.scene.add(this.group);
+      });
 
       this.resize();
+      this.initSlideAnimation();
     };
-  }
-
-  async guiSettings() {
-    this.settings = {
-      progress: 0,
-      progress1: 0,
-    };
-
-    const dat = await import('dat.gui');
-
-    this.gui = new dat.GUI();
-    this.gui.add(this.settings, 'progress', 0, 1, 0.01).onChange((value) => {
-      this.curtainPass.uniforms.uProgress.value = value;
-    });
   }
 
   onMouseMove = (e) => {
@@ -167,6 +165,101 @@ class Scene {
     this.mousePos.y = y;
   };
 
+  initSlideAnimation() {
+    this.isAnimating = false;
+    this.isLast = false;
+
+    this.tl = gsap
+      .timeline({
+        onComplete: () => {
+          this.isAnimating = false;
+          this.isLast = !this.isLast;
+        },
+        onReverseComplete: () => {
+          this.isAnimating = false;
+          this.isLast = !this.isLast;
+        },
+        paused: true,
+      })
+      .to(
+        this.camera.position,
+        {
+          z: 0.7,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        0
+      )
+      .to(
+        this.camera.position,
+        {
+          x: this.textures[0].sizes.width / 1000 / 1.09,
+          duration: 1.5,
+          ease: 'power4.inOut',
+        },
+        0.5
+      )
+      .to(
+        this.camera.position,
+        {
+          z: 1,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        1.5
+      )
+      .to(
+        this.curtainPass.uniforms.uProgress,
+        {
+          value: 1,
+          duration: 1,
+          ease: 'power3.inOut',
+        },
+        0
+      )
+      .to(
+        this.curtainPass.uniforms.uProgress,
+        {
+          value: 0,
+          duration: 1,
+          ease: 'power3.inOut',
+        },
+        1.5
+      )
+      .to(
+        this.rgbPass.uniforms.uProgress,
+        {
+          value: 1,
+          duration: 1,
+          ease: 'power3.inOut',
+        },
+        0
+      )
+      .to(
+        this.rgbPass.uniforms.uProgress,
+        {
+          value: 0,
+          duration: 1,
+          ease: 'power3.inOut',
+        },
+        1.5
+      );
+  }
+
+  runSlideAnimation = () => {
+    if (this.isAnimating) {
+      return;
+    }
+
+    this.isAnimating = true;
+
+    if (this.isLast) {
+      this.tl.reverse();
+    } else {
+      this.tl.play();
+    }
+  };
+
   animate = () => {
     this.time += 0.05;
 
@@ -174,14 +267,15 @@ class Scene {
 
     this.oscillator = Math.sin(this.time * 0.06) * 0.5 + 0.5;
 
-    this.group.rotation.x = -this.mouseTarget.y * 0.1;
-    this.group.rotation.y = -this.mouseTarget.x * 0.1;
-    this.group.children.forEach((mesh, i) => {
-      mesh.position.z = (i + 1) * 0.1 - this.oscillator * 0.1;
+    this.groups.forEach((group) => {
+      group.rotation.x = -this.mouseTarget.y * 0.1;
+      group.rotation.y = -this.mouseTarget.x * 0.1;
+      group.children.forEach((mesh, i) => {
+        mesh.position.z = (i + 1) * 0.1 - this.oscillator * 0.1;
+      });
     });
 
     this.composer.render();
-    this.controls.update();
   };
 
   render() {
