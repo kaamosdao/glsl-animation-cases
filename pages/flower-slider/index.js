@@ -1,15 +1,12 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 
-import Scene from '@/utils/swaying-buddha/Scene';
+import Scene from '@/utils/flower-slider/Scene';
 import { usePageTransition } from '@/hooks';
-
-import vShader from '@/shaders/swaying-buddha/vertex.glsl';
-import fShader from '@/shaders/swaying-buddha/fragment.glsl';
 
 import s from './index.module.scss';
 
-export default function BuddhaPage() {
+export default function FlowerPage() {
   const scene = useRef(null);
   const canvas = useRef(null);
   const canvasHolder = useRef(null);
@@ -17,19 +14,20 @@ export default function BuddhaPage() {
   const isVisible = usePageTransition();
 
   useEffect(() => {
-    scene.current = new Scene(canvas.current, ['swaying-buddha/buddha.jpg'], {
-      vShader,
-      fShader,
-    });
+    scene.current = new Scene(canvas.current, [
+      'flower-slider/mask.png',
+      'flower-slider/lotus.jpg',
+      'flower-slider/sakura.jpg',
+    ]);
 
     window.addEventListener('resize', scene.current.resize);
+    window.addEventListener('click', scene.current.runSlideAnimation);
     window.addEventListener('mousemove', scene.current.onMouseMove);
-    window.addEventListener('click', scene.current.onClick);
 
     return () => {
       window.removeEventListener('resize', scene.current.resize);
+      window.removeEventListener('click', scene.current.runSlideAnimation);
       window.removeEventListener('mousemove', scene.current.onMouseMove);
-      window.removeEventListener('click', scene.current.onClick);
       scene.current.dismiss();
     };
   }, []);

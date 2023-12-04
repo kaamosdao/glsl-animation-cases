@@ -97,6 +97,8 @@ class Scene {
 
     const { vShader, fShader } = this.shaders;
 
+    this.imgNum = 0;
+
     loadManager.onLoad = () => {
       this.material = new THREE.ShaderMaterial({
         vertexShader: vShader,
@@ -105,7 +107,7 @@ class Scene {
           time: { type: 'f', value: 0 },
           image: {
             type: 't',
-            value: this.textures[13].texture,
+            value: this.textures[this.imgNum].texture,
           },
           uvRate: {
             type: 'v2',
@@ -124,8 +126,6 @@ class Scene {
       this.geometry = new THREE.PlaneGeometry(1, 1, 1, 1);
       this.plane = new THREE.Mesh(this.geometry, this.material);
       this.scene.add(this.plane);
-
-      this.imgNum = 13;
 
       this.resize();
     };

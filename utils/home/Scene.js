@@ -88,7 +88,9 @@ class Scene {
     this.group = new THREE.Group();
 
     loadManager.onLoad = () => {
-      for (let i = 0; i < 3; i += 1) {
+      const picsAmount = 7;
+
+      for (let i = 0; i < picsAmount; i += 1) {
         let material;
 
         material = new THREE.MeshBasicMaterial({
@@ -104,7 +106,7 @@ class Scene {
         }
 
         const plane = new THREE.Mesh(this.geometry, material);
-        const distanceBetween = 0.15;
+        const distanceBetween = 0.09;
         plane.position.z = i * distanceBetween;
 
         this.planes.push(plane);
@@ -127,14 +129,17 @@ class Scene {
   };
 
   animate = () => {
-    if (this.material) {
-      this.time += 0.05;
-    }
+    this.time += 0.05;
 
     this.mouseTarget.lerp(this.mousePos, 0.05);
 
+    this.oscillator = Math.sin(this.time * 0.01) * 0.5 + 0.5;
+
     this.group.rotation.x = -this.mouseTarget.y * 0.1;
     this.group.rotation.y = -this.mouseTarget.x * 0.1;
+    this.group.children.forEach((mesh, i) => {
+      mesh.position.z = (i + 1) * 0.07 - this.oscillator * 0.45;
+    });
 
     this.renderer.render(this.scene, this.camera);
   };

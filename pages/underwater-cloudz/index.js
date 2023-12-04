@@ -6,10 +6,8 @@ import gsap from 'gsap/dist/gsap';
 import Scene from '@/utils/underwater-cloudz/Scene';
 import { usePageTransition } from '@/hooks';
 
-import images from '@/data/images';
-
-import vShader from './_shaders/vertex.glsl';
-import fShader from './_shaders/fragment.glsl';
+import vShader from '@/shaders/underwater-cloudz/vertex.glsl';
+import fShader from '@/shaders/underwater-cloudz/fragment.glsl';
 
 import s from './index.module.scss';
 
@@ -21,7 +19,11 @@ export default function CloudzPage() {
   const isVisible = usePageTransition();
 
   useEffect(() => {
-    scene.current = new Scene(canvas.current, images, { vShader, fShader });
+    scene.current = new Scene(
+      canvas.current,
+      ['underwater-cloudz/clouds.jpg'],
+      { vShader, fShader }
+    );
 
     window.addEventListener('resize', scene.current.resize);
     window.addEventListener('mousemove', scene.current.onMouseMove);
