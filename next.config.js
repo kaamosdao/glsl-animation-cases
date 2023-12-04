@@ -24,6 +24,7 @@ const nextConfig = {
       'providers',
       'hooks',
       'context',
+      'shaders',
     ],
   },
 };
