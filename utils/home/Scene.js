@@ -46,8 +46,12 @@ class Scene {
 
     const { height } = this.planes[0].geometry.parameters;
 
+    const fovKoeff = viewportAspect > 1.8 ? viewportAspect / 1.8 : 1;
+
     this.camera.fov =
-      2 * Math.atan(height / 2 / this.camera.position.z) * (180 / Math.PI);
+      2 *
+      Math.atan(height / 2 / this.camera.position.z / fovKoeff) *
+      (180 / Math.PI);
     this.camera.aspect = viewportAspect;
     this.camera.updateProjectionMatrix();
 
