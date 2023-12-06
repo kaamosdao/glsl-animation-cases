@@ -2,7 +2,7 @@
 
 [![Linter](https://github.com/kaamosdao/glsl-animation-cases/actions/workflows/linter.yml/badge.svg)](https://github.com/kaamosdao/glsl-animation-cases/actions/workflows/linter.yml)
 
-This project will contain some animations, i've learned using glsl shaders. Will be replenished over time.
+This project will contain some animations, i've learned using Threejs, GSAP and glsl shaders. Will be replenished over time.
 
 #
 
