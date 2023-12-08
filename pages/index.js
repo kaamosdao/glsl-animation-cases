@@ -10,6 +10,7 @@ export default function Home() {
   const scene = useRef(null);
   const canvas = useRef(null);
   const canvasHolder = useRef(null);
+  const container = useRef(null);
 
   const isVisible = usePageTransition();
 
@@ -35,10 +36,19 @@ export default function Home() {
         duration: 1.0,
       });
     } else {
-      animation = gsap.timeline().to(canvasHolder?.current, {
-        opacity: 0,
-        duration: 0.4,
-      });
+      animation = gsap
+        .timeline()
+        .to(canvasHolder?.current, {
+          opacity: 0,
+          duration: 0.4,
+        })
+        .to(
+          container?.current,
+          {
+            position: 'absolute',
+          },
+          0
+        );
     }
 
     return () => {
@@ -48,7 +58,7 @@ export default function Home() {
 
   return (
     <div ref={canvasHolder} className={s.canvasHolder}>
-      <div className={s.container}>
+      <div ref={container} className={s.container}>
         <p className={s.letter}>k</p>
         <p className={s.letter}>a</p>
         <p className={s.letter}>a</p>

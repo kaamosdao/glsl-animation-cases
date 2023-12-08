@@ -60,7 +60,7 @@ export default function AnimationList() {
     });
   };
 
-  const onClick = (e) => {
+  const closeNavigation = (e) => {
     e.stopPropagation();
 
     setModal(null);
@@ -74,7 +74,7 @@ export default function AnimationList() {
           key={path}
           onMouseEnter={onMouseEnter(ref)}
           onMouseLeave={onMouseLeave(ref)}
-          onClick={onClick}
+          onClick={closeNavigation}
           className={s.navButton}
           href={path}
         >

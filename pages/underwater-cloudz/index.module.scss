@@ -4,6 +4,7 @@
 .canvasHolder {
   @include font(normal, 16px, 142%);
 
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
