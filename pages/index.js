@@ -36,19 +36,10 @@ export default function Home() {
         duration: 1.0,
       });
     } else {
-      animation = gsap
-        .timeline()
-        .to(canvasHolder?.current, {
-          opacity: 0,
-          duration: 0.4,
-        })
-        .to(
-          container?.current,
-          {
-            position: 'absolute',
-          },
-          0
-        );
+      animation = gsap.timeline().to(canvasHolder?.current, {
+        opacity: 0,
+        duration: 0.4,
+      });
     }
 
     return () => {
