@@ -8,13 +8,21 @@
   z-index: 100;
 }
 
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+
+  @media (min-width: $tablet) {
+    gap: 20px;
+    justify-content: end;
+    margin-right: 15%;
+  }
+}
+
 .navButton {
   @include font(normal, 12px, 24px, 3px);
 
-  position: absolute;
-  right: 50%;
-  width: 100px;
-  margin-right: -50px;
   padding: 0;
   border: none;
   color: var(--blue);
@@ -23,9 +31,6 @@
 
   @media (min-width: $tablet) {
     @include font(normal, 14px, 24px, 3px);
-
-    right: 15%;
-    margin-right: 0;
   }
 }
 

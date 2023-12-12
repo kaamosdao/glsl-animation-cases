@@ -1,8 +1,10 @@
-import { createRef, useRef } from 'react';
+import { createRef } from 'react';
 import Link from 'next/link';
 import gsap from 'gsap';
 
 import { useModal } from '@/hooks';
+
+import HoverAnimation from '../HoverAnimation';
 
 import s from './AnimationList.module.scss';
 
@@ -22,43 +24,7 @@ const pagesList = [
 ];
 
 export default function AnimationList() {
-  const tl = useRef(null);
-
   const { setModal } = useModal();
-
-  const onMouseEnter = (ref) => () => {
-    tl.current = gsap
-      .timeline({ repeat: -1 })
-      .to(ref?.current, {
-        color: gsap.getProperty('html', '--purple'),
-        duration: 0.9,
-      })
-      .to(ref?.current, {
-        color: gsap.getProperty('html', '--pink'),
-        duration: 0.9,
-      })
-      .to(ref?.current, {
-        color: gsap.getProperty('html', '--red'),
-        duration: 0.9,
-      })
-      .to(ref?.current, {
-        color: gsap.getProperty('html', '--gold'),
-        duration: 0.9,
-      })
-      .to(ref?.current, {
-        color: gsap.getProperty('html', '--blue'),
-        duration: 0.9,
-      });
-  };
-
-  const onMouseLeave = (ref) => () => {
-    tl.current?.kill();
-
-    gsap.to(ref?.current, {
-      color: '#2168b5',
-      duration: 0.5,
-    });
-  };
 
   const closeNavigation = (e) => {
     e.stopPropagation();
@@ -69,17 +35,16 @@ export default function AnimationList() {
   return (
     <nav className={s.nav}>
       {pagesList.map(({ path, label, ref }) => (
-        <Link
-          ref={ref}
-          key={path}
-          onMouseEnter={onMouseEnter(ref)}
-          onMouseLeave={onMouseLeave(ref)}
-          onClick={closeNavigation}
-          className={s.navButton}
-          href={path}
-        >
-          {label}
-        </Link>
+        <HoverAnimation key={path} color={gsap.getProperty('html', '--blue')}>
+          <Link
+            ref={ref}
+            onClick={closeNavigation}
+            className={s.navButton}
+            href={path}
+          >
+            {label}
+          </Link>
+        </HoverAnimation>
       ))}
     </nav>
   );
