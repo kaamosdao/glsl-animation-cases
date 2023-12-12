@@ -1,5 +1,6 @@
 const modalTypes = {
   animationsList: 'animationsList',
+  about: 'about',
 };
 
 export const transitionState = {

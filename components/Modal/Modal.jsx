@@ -6,11 +6,13 @@ import gsap from 'gsap/dist/gsap';
 import { useModal } from '@/hooks';
 
 import AnimationList from '@/components/AnimationList';
+import About from '@/components/About';
 
 import s from './Modal.module.scss';
 
 const modals = {
   animationsList: <AnimationList />,
+  about: <About />,
 };
 
 const Modal = () => {
