@@ -1,7 +1,7 @@
 import { useRef, cloneElement } from 'react';
 import gsap from 'gsap/dist/gsap';
 
-export default function HoverAnimation({ children, color }) {
+export default function HoverAnimation({ children, color = '#2168b5' }) {
   const tl = useRef(null);
 
   const onMouseEnter = (e) => {

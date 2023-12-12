@@ -1,5 +1,3 @@
-import gsap from 'gsap';
-
 import { useModal } from '@/hooks';
 
 import modalTypes from '@/utils/types';
@@ -14,7 +12,7 @@ export default function Navigation() {
   return (
     <nav className={s.nav}>
       <div className={s.buttons}>
-        <HoverAnimation color={gsap.getProperty('html', '--blue')}>
+        <HoverAnimation>
           <button
             onClick={() => setModal(modalTypes.animationsList)}
             type="button"
@@ -23,7 +21,7 @@ export default function Navigation() {
             animations
           </button>
         </HoverAnimation>
-        <HoverAnimation color={gsap.getProperty('html', '--blue')}>
+        <HoverAnimation>
           <button
             onClick={() => setModal(modalTypes.about)}
             type="button"

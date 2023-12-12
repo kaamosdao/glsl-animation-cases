@@ -1,4 +1,5 @@
 import HoverAnimation from '../HoverAnimation';
+
 import s from './About.module.scss';
 
 export default function About() {
@@ -13,7 +14,7 @@ export default function About() {
       <ul className={s.contacts}>
         <li>
           <span>email: </span>
-          <HoverAnimation color="var(--blue)">
+          <HoverAnimation>
             <a
               className={s.contactLink}
               type="email"
@@ -25,7 +26,7 @@ export default function About() {
         </li>
         <li>
           <span>telegram: </span>
-          <HoverAnimation color="var(--blue)">
+          <HoverAnimation>
             <a className={s.contactLink} href="https://t.me/kaamosdao">
               https://t.me/kaamosdao
             </a>
@@ -33,7 +34,7 @@ export default function About() {
         </li>
         <li>
           <span>instagram: </span>
-          <HoverAnimation color="var(--blue)">
+          <HoverAnimation>
             <a
               className={s.contactLink}
               href="https://www.instagram.com/kaamosdao/"

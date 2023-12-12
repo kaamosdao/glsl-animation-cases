@@ -1,6 +1,5 @@
 import { createRef } from 'react';
 import Link from 'next/link';
-import gsap from 'gsap';
 
 import { useModal } from '@/hooks';
 
@@ -35,7 +34,7 @@ export default function AnimationList() {
   return (
     <nav className={s.nav}>
       {pagesList.map(({ path, label, ref }) => (
-        <HoverAnimation key={path} color={gsap.getProperty('html', '--blue')}>
+        <HoverAnimation key={path}>
           <Link
             ref={ref}
             onClick={closeNavigation}
