@@ -6,7 +6,7 @@ export default function About() {
   return (
     <div className={s.container}>
       <p>
-        Hey, my name is Alexander. Currently i&apos;m learning Threejs, GSAP and
+        Hey! My name is Alexander. Currently i&apos;m learning Threejs, GSAP and
         glsl shaders. This project will contain some animations. Mostly inspired
         by Yuri Artiukh youtube channel.
       </p>
